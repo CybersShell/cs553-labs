@@ -71,7 +71,7 @@ Commands are case-insensitive, but the command arguments should be handled as no
 | `UPPER hello`   | `HELLO`             |
 | `LOWER HELLO`   | `hello`             |
 | `REVERSE hello` | `olleh`             |
-| `TIME`          | current server time |
+| `TIME`          | current server time [ex: `Thu Jun 04 2026 13:04:41 GMT-0500 (Central Daylight Time)` ] |
 | `QUIT`          | closes connection   |
 | unknown command | error message       |
 
@@ -178,9 +178,13 @@ npm run test:watch
 Answer the following questions in your submission:
 
 1. What is the difference between the client and the server?
+    The client sends commands to a server. The server on the other hand handles requests and processes data received by the client.
 2. Why does the server need to keep running after handling one request?
+    The server has to receive other commands and could be called upon at any time.
 3. What happens if two clients connect at the same time?
+    The server is able to handle mutiple clients. Each client uses a different port on the local machine.
 4. How is this different from HTTP?
+    HTTP is a connection protocol that can specify timeouts and how many clients can connect from a machine.
 
 ## Submission
 

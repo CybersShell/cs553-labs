@@ -12,21 +12,18 @@ export function handleCommand(line) {
         case "ECHO":
             return argument;
 
-        // TODO: implement UPPER
-        // Example:
-        // UPPER hello -> HELLO
+        case "UPPER":
+            return argument.toUpperCase();
+        
+        case "LOWER":
+            return argument.toLowerCase();
 
-        // TODO: implement LOWER
-        // Example:
-        // LOWER HELLO -> hello
+        case "REVERSE":
+            return reverseString(argument);
 
-        // TODO: implement REVERSE
-        // Example:
-        // REVERSE hello -> olleh
-
-        // TODO: implement TIME
-        // Example:
-        // TIME -> current server time
+        case "TIME":
+            const serverTime = new Date(Date.now())
+            return serverTime.toString();
 
         case "QUIT":
             return "Goodbye.";
@@ -38,4 +35,12 @@ export function handleCommand(line) {
 
 export function shouldCloseConnection(line) {
     return line.trim().toUpperCase() === "QUIT";
+}
+
+function reverseString(string) {
+    var reversedStr = string.slice(-1)
+    for (let index = 1; index < string.length; index++) {
+        reversedStr += string.slice(-index-1, -index)
+    }
+    return reversedStr;
 }

@@ -182,9 +182,9 @@ Answer the following questions in your submission:
 2. Why does the server need to keep running after handling one request?
     The server has to receive other commands and could be called upon at any time.
 3. What happens if two clients connect at the same time?
-    The server is able to handle mutiple clients. Each client uses a different port on the local machine.
+    The server is able to handle mutiple clients. Each client establishes its own socket connection, which is identified by a unique combination of IP address and port number.
 4. How is this different from HTTP?
-    HTTP is a connection protocol that can specify timeouts and how many clients can connect from a machine.
+    HTTP is a connection protocol that can specify timeouts and can have headers added. It is higher-level than the socket connection.
 
 ## Submission
 

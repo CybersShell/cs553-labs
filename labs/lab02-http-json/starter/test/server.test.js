@@ -211,6 +211,28 @@ describe("Lab 2 HTTP JSON server", () => {
         expect(typeof result.body.count).toBe("number");
         expect(result.body.count).toBeGreaterThanOrEqual(2);
     });
+
+    test("GET /requests returns a request count per route", async () => {
+        await getJson("/health");
+        await getJson("/health");
+        await postJson("/calculate", {
+            operation: "divide",
+            a: 20,
+            b: 5
+        });
+        await postJson("/echo", {
+            message: "hello"
+        });
+        const result = await getJson("/requests");
+        expect(result.status).toBe(200);
+        expect(result.body).toHaveProperty("perRoute");
+        expect(result.body.perRoute).toHaveProperty("health");
+        expect(typeof result.body.perRoute.health).toBe("number");
+        expect(result.body.perRoute).toHaveProperty("calculate");
+        expect(typeof result.body.perRoute.calculate).toBe("number");
+        expect(result.body.perRoute.requests).toBeGreaterThanOrEqual(1);
+        expect(result.body.perRoute.health).toBeGreaterThanOrEqual(2);
+    });
 });
 
 describe("handleCalculate", () => {

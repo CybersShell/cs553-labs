@@ -3,6 +3,12 @@ import http from "node:http";
 const DEFAULT_PORT = 3000;
 
 let requestCount = 0;
+let requestCountsPerRoute = {
+    health: 0,
+    echo: 0,
+    calculate: 0,
+    requests: 0
+}
 
 export function sendJson(res, statusCode, body) {
     res.writeHead(statusCode, {
@@ -38,18 +44,119 @@ export function readJsonBody(req) {
 }
 
 export function handleCalculate(body) {
-    // TODO: Validate that operation, a, and b are present.
-    // TODO: Validate that a and b are numbers.
-    // TODO: Support add, subtract, multiply, and divide.
-    // TODO: Return an error for unsupported operations.
-    // TODO: Return an error for division by zero.
+    const operation = body.operation
+    if ( operation === "" ) {
+        return {
+            statusCode: 400,
+            response: {
+                error: "operation required for calulation"
+            }
+        }
+    }
 
-    return {
-        statusCode: 501,
-        response: {
-            error: "Calculation not implemented yet"
+    const operandA = body.a
+    const operandB = body.b
+    if ("a" in body) {
+        if (isNaN(operandA)) {
+            return {
+                statusCode: 400,
+                response: {
+                    error: "operand a must be number"
+                }
+            }
+        }
+    } else {
+        return {
+            statusCode: 200,
+            response: {
+                error: "operand a required for calulation"
+            }
+        }
+    }
+    
+    if ("b" in body) {
+        if (isNaN(operandB)) {
+            return {
+                statusCode: 400,
+                response: {
+                    error: "operand b must be number"
+                }
+            }
+        }
+    } else {
+        return {
+            statusCode: 400,
+            response: {
+                error: "operand b required for calulation"
+            }
+        }
+    }
+    
+
+    switch (operation) {
+        case "add":
+            var operationRes = operandA + operandB
+            return {
+                statusCode: 200,
+                response: { 
+                    result: operationRes
+                }
+            }
+            break;
+        case "subtract":
+            var operationRes = operandA - operandB
+            return {
+                statusCode: 200,
+                response: { 
+                    result: operationRes
+                }
+            }
+            break;
+        case "subtract":
+            var operationRes = operandA - operandB
+            return {
+                statusCode: 200,
+                response: { 
+                    result: operationRes
+                }
+            }
+            break;
+        case "multiply":
+            var operationRes = operandA * operandB
+            return {
+                statusCode: 200,
+                response: { 
+                    result: operationRes
+                }
+            }
+            break;
+        case "divide":
+            if (operandB === 0) {
+                return {
+                    statusCode: 400,
+                    response: {
+                        error: "Cannot divide by 0"
+                    }
+                }
+            }
+            var operationRes = operandA / operandB
+            return {
+                statusCode: 200,
+                response: { 
+                    result: operationRes
+                }
+            }
+            break;
+
+        default:
+            return {
+                statusCode: 400,
+                response: {
+                    error: "Unsupported operation"
+                }
         }
     };
+
 }
 
 export async function requestHandler(req, res) {
@@ -59,30 +166,32 @@ export async function requestHandler(req, res) {
     const url = req.url;
 
     if (method === "GET" && url === "/health") {
+        requestCountsPerRoute.health += 1;
         sendJson(res, 200, { status: "ok" });
         return;
     }
-
+    
     if (method === "GET" && url === "/requests") {
-        // TODO: Return the current request count as JSON.
-        sendJson(res, 501, { error: "Request counter not implemented yet" });
+        requestCountsPerRoute.requests += 1;
+        sendJson(res, 200, { count: requestCount, perRoute: requestCountsPerRoute });
         return;
     }
-
+    
     if (method === "POST" && url === "/echo") {
+        requestCountsPerRoute.echo += 1;
         try {
             const body = await readJsonBody(req);
-
-            // TODO: Return the parsed JSON body back to the client.
-            sendJson(res, 501, { error: "Echo not implemented yet" });
+            
+            sendJson(res, 200, body );
         } catch {
             sendJson(res, 400, { error: "Invalid JSON" });
         }
-
+        
         return;
     }
-
+    
     if (method === "POST" && url === "/calculate") {
+        requestCountsPerRoute.calculate += 1;
         try {
             const body = await readJsonBody(req);
             const result = handleCalculate(body);

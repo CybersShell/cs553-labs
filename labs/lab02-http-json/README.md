@@ -276,7 +276,7 @@ npm run test:watch
 Answer the following questions in your submission:
 
 1. What is the difference between a TCP message and an HTTP request?
-  A TCP message a single command or status code, where as an HTTP request is a complex request containing a type such as GET, POST, PUT, etc., headers, messages, URIs, and status codes.
+  A TCP message a single command or status code, where as an HTTP request is a complex request containing a type such as GET, POST, PUT, etc., headers, a body, URIs, and status codes.
 2. What does the `Content-Type: application/json` header tell the server?
   This tells the server the client is sending JSON.
 3. Why should a server return different HTTP status codes for different situations?

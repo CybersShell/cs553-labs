@@ -23,11 +23,119 @@ paths:
                     type: string
                     example: ok
 
-  # TODO: Document GET /items.
-  # TODO: Document POST /items.
-  # TODO: Document GET /items/{id}.
-  # TODO: Document PUT /items/{id}.
-  # TODO: Document DELETE /items/{id}.
+  /items:
+    get:
+      summary: Get all items
+      responses:
+        "200":
+          description: Get all items in the server
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Item'
+    post:
+      summary: Create item
+      responses:
+        "201":
+          description: Item created
+          content:
+            application/json:
+              schema:
+                type: object
+                items:
+                  $ref: '#/components/schemas/Item'
+        "400":
+          description: Error with user input
+          content:
+            application/json:
+              schema:
+                type: object
+                items:
+                  $ref: '#/components/schemas/ErrorResponse'
+        "404":
+          description: Item does not exist
+          content:
+            application/json:
+              schema:
+                type: object
+                items:
+                  $ref: '#/components/schemas/ErrorResponse'
+
+      requestBody:
+        description: Item data to send
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Item"
+  /items/{id}:
+    summary: Find, update, or delete an item
+    parameters:
+      - in: query
+        name: id
+        schema:
+          type: number
+    get:
+      responses:
+        "200":
+          description: "Get an item"
+          content:
+            application/json:
+              schema:
+                type: object
+                items:
+                  $ref: '#/components/schemas/Item'
+        "404":
+          description: Item does not exist
+          content:
+            application/json:
+              schema:
+                type: object
+                items:
+                  $ref: '#/components/schemas/ErrorResponse'
+
+    put:
+      responses:
+        "200":
+          description: "Update an item"
+          content:
+            application/json:
+              schema:
+                type: object
+                items:
+                  $ref: '#/components/schemas/Item'
+        "404":
+          description: Item does not exist
+          content:
+            application/json:
+              schema:
+                type: object
+                items:
+                  $ref: '#/components/schemas/ErrorResponse'
+      requestBody:
+        description: Item data to send
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ItemInput"
+    delete:
+      responses:
+        "204":
+          description: "Delete an item"
+        "404":
+          description: "Item does not exist"
+          content:
+            application/json:
+              schema:
+                type: object
+                items:
+                  $ref: '#/components/schemas/ErrorResponse'
+
+
+
   #
   # Remember:
   # - Express routes use :id, such as /items/:id.
@@ -38,6 +146,42 @@ paths:
 
 components:
   schemas:
-  # TODO: Define an Item schema with id, name, and quantity.
-  # TODO: Define an ItemInput schema with name and quantity.
-  # TODO: Define an ErrorResponse schema with an error message.
+    Item:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 2
+          format: uint
+        name:
+          example: "clock"
+          type: string
+        quantity:
+          example: 6
+          type: integer
+          format: uint
+      required:
+        - id
+        - name
+        - quantity
+    ItemInput:
+      type: object
+      properties:
+        name:
+          example: "clock"
+          type: string
+        quantity:
+          example: 6
+          type: integer
+          format: uint
+      required:
+        - name
+        - quantity
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: string
+          example: "Item does not exist"
+      required:
+        - error

@@ -253,12 +253,36 @@ curl -X POST http://localhost:3000/items \
   -d '{"name":"monitor","quantity":4}'
 ```
 
+Example `POST` request with empty name:
+
+```bash
+curl -X POST http://localhost:3000/items \
+  -H "Content-Type: application/json" \
+  -d '{"name":"","quantity":4}'
+```
+
+Example `POST` request with no name:
+
+```bash
+curl -X POST http://localhost:3000/items \
+  -H "Content-Type: application/json" \
+  -d '{"quantity":4}'
+```
+
 Example `PUT` request:
 
 ```bash
 curl -X PUT http://localhost:3000/items/1 \
   -H "Content-Type: application/json" \
   -d '{"name":"mechanical keyboard","quantity":12}'
+```
+
+Example `PUT` request with negative quantity:
+
+```bash
+curl -X PUT http://localhost:3000/items/1 \
+  -H "Content-Type: application/json" \
+  -d '{"name":"mechanical keyboard","quantity":-84}'
 ```
 
 Example `DELETE` request:
@@ -294,10 +318,15 @@ npm test
 Answer the following questions in your submission:
 
 1. What makes this API more "REST-like" than the previous HTTP/JSON lab?
+This lab creates a structured request format. 
 2. What is the purpose of a route parameter such as `/items/:id`?
+The route parameters allow passing data in the URL as opposed to a body.
 3. Why should `POST`, `PUT`, and `DELETE` use different HTTP methods?
+They describe different actions to be taken on the server. This simplfies application logic and prevents complex processing.
 4. What is the difference between a `400` error and a `404` error?
+A `400` error code means Bad request, which usually means there is malformed data sent. A `404` code means Not Found, which typically means a requested resource, like an item in context of this lab, was not found.
 5. How does the OpenAPI file relate to your Express server code?
+The OpenAPI file documents the routes, methods, responses, and requests the server implements and expects.
 
 ## Graduate Students
 

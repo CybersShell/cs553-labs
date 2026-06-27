@@ -237,7 +237,7 @@ Expected response:
 }
 ```
 
-As you implement the lab, add additional `curl` tests for the item routes.
+I have included example requests with errors in the body.
 
 Example:
 

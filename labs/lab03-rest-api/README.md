@@ -313,6 +313,8 @@ Run tests with:
 npm test
 ```
 
+I have added tests for bad input and checked for errors in the response.
+
 ## Reflection Questions
 
 Answer the following questions in your submission:
